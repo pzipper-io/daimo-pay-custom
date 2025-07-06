@@ -8,6 +8,7 @@ import {
   DaimoPayEventType,
   DaimoPayOrderView,
   DaimoPayUserMetadata,
+  DepositAddressPaymentOptions,
   ExternalPaymentOptionsString,
   getDaimoPayOrderView,
   getOrderDestChainId,
@@ -15,6 +16,7 @@ import {
   PaymentBouncedEvent,
   PaymentCompletedEvent,
   PaymentStartedEvent,
+  WaitingDepositAddressParams,
   writeDaimoPayOrderID,
 } from "@daimo/pay-common";
 import { AnimatePresence, Variants } from "framer-motion";
@@ -24,6 +26,7 @@ import { PayParams } from "../../payment/paymentFsm";
 import { ResetContainer } from "../../styles";
 import { CustomTheme, Mode, Theme } from "../../types";
 import ThemedButton, { ThemeContainer } from "../Common/ThemedButton";
+import { ROUTES } from "../../constants/routes";
 
 /** Payment details and status. */
 export type DaimoPayment = DaimoPayOrderView;
@@ -134,7 +137,18 @@ export type DaimoPayButtonProps = PayButtonCommonProps & {
   disabled?: boolean;
 };
 
-export type DaimoPayButtonCustomProps = PayButtonCommonProps & {
+export type PzipperExtendPayButtonProps = {
+  onWaitingPayment?: (params: WaitingDepositAddressParams) => void;
+  /**
+   * Force to use the pay to address and quick to skip the payment and chain selection.
+   */
+  forcePayToAddress?: {
+    forceSenderChain: DepositAddressPaymentOptions;
+  };
+};
+
+export type DaimoPayButtonCustomProps = PayButtonCommonProps &
+  PzipperExtendPayButtonProps & {
   /** Custom renderer */
   children: (renderProps: {
     show: () => void;
@@ -230,8 +244,32 @@ function DaimoPayButtonCustom(props: DaimoPayButtonCustomProps): JSX.Element {
     }
   }, [props.redirectReturnUrl, setRedirectReturnUrl]);
 
+  const { setOnWaitingPayment } = context;
+  useEffect(() => {
+    if (props.onWaitingPayment) {
+      setOnWaitingPayment(() => props.onWaitingPayment);
+    }
+    return () => setOnWaitingPayment(undefined);
+  }, [props.onWaitingPayment, setOnWaitingPayment]);
+
   // Set the onOpen and onClose callbacks
-  const { setOnOpen, setOnClose } = context;
+  const { setOnOpen, setOnClose, setRoute } = context;
+  const { depositAddressOptions, setSelectedDepositAddressOption } = paymentState;
+
+  const forcePayToAddress = useCallback(() => {
+    if (props.forcePayToAddress?.forceSenderChain) {
+      depositAddressOptions.options?.map(option => {
+        if (option.id === props.forcePayToAddress?.forceSenderChain) {
+          setSelectedDepositAddressOption(option);
+          setRoute(ROUTES.WAITING_DEPOSIT_ADDRESS, {
+            option: option.id,
+          });
+        }
+      })
+    }
+
+  }, [depositAddressOptions, props.forcePayToAddress, setRoute, setSelectedDepositAddressOption])
+
   useEffect(() => {
     setOnOpen(props.onOpen);
     return () => setOnOpen(undefined);
@@ -249,13 +287,16 @@ function DaimoPayButtonCustom(props: DaimoPayButtonCustomProps): JSX.Element {
   const { children, closeOnSuccess, resetOnSuccess, connectedWalletOnly } =
     props;
   const show = useCallback(() => {
+    forcePayToAddress()
+
     const modalOptions = {
       closeOnSuccess,
       resetOnSuccess,
       connectedWalletOnly,
+      isForcePayToAddress: props.forcePayToAddress?.forceSenderChain != null,
     };
     context.showPayment(modalOptions);
-  }, [connectedWalletOnly, closeOnSuccess, resetOnSuccess, context]);
+  }, [connectedWalletOnly, closeOnSuccess, resetOnSuccess, context, depositAddressOptions]);
   const hide = useCallback(() => context.setOpen(false), [context]);
 
   // Emit onPaymentStart handler when payment state changes to payment_started

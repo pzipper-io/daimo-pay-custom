@@ -34,6 +34,18 @@ const demos: DemoCard[] = [
     path: "/deposit",
   },
   {
+    title: "Extended Deposit",
+    description:
+      "Advanced deposit with waiting payment callback and force payment methods.",
+    path: "/extend_deposit",
+  },
+  {
+    title: "Extended Pay",
+    description:
+      "Advanced payment with forced payment method selection.",
+    path: "/extend_pay",
+  },
+  {
     title: "Mini App",
     description: "Ship World and Farcaster mini apps with social distribution.",
     path: "/mini-app",

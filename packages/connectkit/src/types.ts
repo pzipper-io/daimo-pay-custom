@@ -56,6 +56,7 @@ export type DaimoPayModalOptions = {
   closeOnSuccess?: boolean;
   resetOnSuccess?: boolean;
   connectedWalletOnly?: boolean;
+  isForcePayToAddress?: boolean;
 };
 
 // TODO: move types here from daimo-common/daimoPay.ts:
