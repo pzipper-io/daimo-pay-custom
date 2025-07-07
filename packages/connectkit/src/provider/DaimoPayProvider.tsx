@@ -2,7 +2,6 @@ import {
   DaimoPayOrderMode,
   DaimoPayOrderStatusSource,
   debugJson,
-  WaitingDepositAddressParams,
 } from "@daimo/pay-common";
 import { Buffer } from "buffer";
 import React, {
@@ -35,6 +34,7 @@ import {
   Languages,
   Mode,
   Theme,
+  WaitingDepositAddressParams,
 } from "../types";
 import { createTrpcClient } from "../utils/trpc";
 import { setInWalletPaymentUrlFromApiUrl } from "../wallets/walletConfigs";

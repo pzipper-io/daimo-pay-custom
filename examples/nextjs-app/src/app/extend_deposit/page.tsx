@@ -1,17 +1,16 @@
 "use client";
 
-import { DaimoPayButton, useDaimoPayUI } from "@daimo/pay";
+import { DaimoPayButton, useDaimoPayUI, WaitingDepositAddressParams } from "@daimo/pay";
 import * as Tokens from "@daimo/pay-common";
 import {
   knownTokens,
   DepositAddressPaymentOptions,
-  WaitingDepositAddressParams,
 } from "@daimo/pay-common";
 import { useCallback, useEffect, useState } from "react";
 import { getAddress } from "viem";
 import { Text, TextLink } from "../../shared/tailwind-catalyst/text";
 import CodeSnippet from "../code-snippet";
-import { APP_ID, Container, printEvent, usePersistedConfig } from "../shared";
+import { APP_ID, Container, printEvent } from "../shared";
 
 type Config = {
   recipientAddress: string;
@@ -26,14 +25,14 @@ export default function DemoExtendDeposit() {
   const [txHash, setTxHash] = useState<string | null>(null);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [waitingPaymentData, setWaitingPaymentData] = useState<WaitingDepositAddressParams | null>(null);
-  const [config, setConfig] = usePersistedConfig("daimo-extend-deposit-config", {
+  const [config, setConfig] = useState<Config>({
     recipientAddress: "",
     chainId: 0,
     tokenAddress: "",
     amount: "0",
     forcePayToAddress: false,
     selectedDepositOption: DepositAddressPaymentOptions.BASE,
-  } as Config);
+  });
   const [codeSnippet, setCodeSnippet] = useState("");
   const { resetPayment } = useDaimoPayUI();
 
@@ -43,6 +42,7 @@ export default function DemoExtendDeposit() {
       toChain: newConfig.chainId,
       toAddress: getAddress(newConfig.recipientAddress),
       toToken: getAddress(newConfig.tokenAddress),
+      toUnits: newConfig.amount,
     });
   }, [setConfig, resetPayment]);
 

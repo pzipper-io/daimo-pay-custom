@@ -10,9 +10,9 @@ import {
   Languages,
   Mode,
   Theme,
+  WaitingDepositAddressParams,
 } from "../types";
 import { SolanaWalletName } from "./SolanaContextProvider";
-import { WaitingDepositAddressParams } from "@daimo/pay-common";
 
 /** Meant for internal use. This will be non-exported in a future SDK version. */
 export const PayContext = createContext<PayContextValue | null>(null);

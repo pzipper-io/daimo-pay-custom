@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useEffect, useRef } from "react";
+import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 
 import { usePayContext } from "../../hooks/usePayContext";
 import { TextContainer } from "./styles";
@@ -16,7 +16,6 @@ import {
   PaymentBouncedEvent,
   PaymentCompletedEvent,
   PaymentStartedEvent,
-  WaitingDepositAddressParams,
   writeDaimoPayOrderID,
 } from "@daimo/pay-common";
 import { AnimatePresence, Variants } from "framer-motion";
@@ -24,7 +23,7 @@ import { Address, Hex } from "viem";
 import { useDaimoPay } from "../../hooks/useDaimoPay";
 import { PayParams } from "../../payment/paymentFsm";
 import { ResetContainer } from "../../styles";
-import { CustomTheme, Mode, Theme } from "../../types";
+import { CustomTheme, Mode, Theme, WaitingDepositAddressParams } from "../../types";
 import ThemedButton, { ThemeContainer } from "../Common/ThemedButton";
 import { ROUTES } from "../../constants/routes";
 
@@ -190,6 +189,7 @@ export function DaimoPayButton(props: DaimoPayButtonProps): JSX.Element {
 /** Like DaimoPayButton, but with custom styling. */
 function DaimoPayButtonCustom(props: DaimoPayButtonCustomProps): JSX.Element {
   const context = usePayContext();
+  const [isShowing, setIsShowing] = useState(false);
 
   // Pre-load payment info in background.
   // Reload when any of the info changes.
@@ -256,19 +256,32 @@ function DaimoPayButtonCustom(props: DaimoPayButtonCustomProps): JSX.Element {
   const { setOnOpen, setOnClose, setRoute } = context;
   const { depositAddressOptions, setSelectedDepositAddressOption } = paymentState;
 
-  const forcePayToAddress = useCallback(() => {
+  useEffect(() => {
+    if (!isShowing) return;
+
     if (props.forcePayToAddress?.forceSenderChain) {
-      depositAddressOptions.options?.map(option => {
-        if (option.id === props.forcePayToAddress?.forceSenderChain) {
-          setSelectedDepositAddressOption(option);
-          setRoute(ROUTES.WAITING_DEPOSIT_ADDRESS, {
-            option: option.id,
-          });
-        }
-      })
+      if (depositAddressOptions.options.length === 0) {
+        return;
+      }
+
+      forcePayToAddress();
     }
 
-  }, [depositAddressOptions, props.forcePayToAddress, setRoute, setSelectedDepositAddressOption])
+    setIsShowing(false);
+  }, [isShowing, depositAddressOptions, props.forcePayToAddress]);
+
+  const forcePayToAddress = useCallback(() => {
+    console.log('123123231232141324234235');
+    depositAddressOptions.options?.map(option => {
+      if (option.id === props.forcePayToAddress?.forceSenderChain) {
+        console.log('=====option:::::::', option);
+        setSelectedDepositAddressOption(option);
+        setRoute(ROUTES.WAITING_DEPOSIT_ADDRESS, {
+          option: option.id,
+        });
+      }
+    })
+  }, [depositAddressOptions, props.forcePayToAddress, setRoute, setSelectedDepositAddressOption, isShowing])
 
   useEffect(() => {
     setOnOpen(props.onOpen);
@@ -287,7 +300,7 @@ function DaimoPayButtonCustom(props: DaimoPayButtonCustomProps): JSX.Element {
   const { children, closeOnSuccess, resetOnSuccess, connectedWalletOnly } =
     props;
   const show = useCallback(() => {
-    forcePayToAddress()
+    setIsShowing(true);
 
     const modalOptions = {
       closeOnSuccess,

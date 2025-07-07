@@ -30,6 +30,7 @@
     "start": "rollup --config rollup.config.js -w",
     "dev": "rollup --config rollup.config.js -w",
     "build": "rollup --config rollup.config.js",
+    "prepare": "npm run build",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --max-warnings=0"
   },
   "keywords": [
@@ -46,7 +47,7 @@
     "crypto"
   ],
   "dependencies": {
-    "@daimo/pay-common": "github:pzipper-io/daimo-pay-custom#main:/packages/pay-common",
+    "@daimo/pay-common": "1.12.1",
     "@rollup/plugin-typescript": "^12.1.2",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
@@ -90,6 +91,7 @@
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-visualizer": "^5.5.4",
+    "typescript": "^5.5.2",
     "typescript-plugin-styled-components": "^3.0.0"
   }
 }
