@@ -34,6 +34,7 @@ import {
   Languages,
   Mode,
   Theme,
+  WaitingDepositAddressParams,
 } from "../types";
 import { createTrpcClient } from "../utils/trpc";
 import { setInWalletPaymentUrlFromApiUrl } from "../wallets/walletConfigs";
@@ -186,6 +187,9 @@ const DaimoPayUIProvider = ({
   const [redirectReturnUrl, setRedirectReturnUrl] = useState<
     string | undefined
   >(undefined);
+  const [onWaitingPayment, setOnWaitingPayment] = useState<
+    ((params: WaitingDepositAddressParams) => void) | undefined
+  >(undefined);
   // Connect to the Daimo Pay TRPC API
   const trpc = useMemo(() => {
     return createTrpcClient(payApiUrl, sessionId);
@@ -290,6 +294,9 @@ const DaimoPayUIProvider = ({
       setRoute(ROUTES.CONFIRMATION);
     } else if (modalOptions.connectedWalletOnly) {
       setRoute(ROUTES.SELECT_TOKEN);
+    } else if (modalOptions.isForcePayToAddress) {
+      // route already set in DaimoPayButton OnOpen callback
+      return;
     } else {
       setRoute(ROUTES.SELECT_METHOD);
     }
@@ -347,6 +354,8 @@ const DaimoPayUIProvider = ({
     setConfirmationMessage,
     redirectReturnUrl,
     setRedirectReturnUrl,
+    onWaitingPayment,
+    setOnWaitingPayment,
     debugMode,
     log,
     displayError: (message: string | React.ReactNode | null, code?: any) => {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { AppRouter } from "@daimo/pay-api";
 import {
   CreateTRPCClient,

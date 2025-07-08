@@ -8,6 +8,20 @@ Daimo Pay enables seamless crypto payments for your app.
 
 Onboard users from any chain, any coin into your app with one click and maximize your conversion.
 
+## Pzipper Development
+1. npm install & @worldcoin/minikit-js
+2. cd packages/pay-common && npm run build
+3. 
+```bash
+cd package/connectkit
+npm run dev
+```
+4.
+```bash
+cd examples/nextjs-app
+npm run dev
+```
+
 ## Features
 
 - 🌱 Instant cross-chain payments — Accept payment from 1000+ tokens on multiple chains. Payments complete in less than 5 seconds. We handle the swapping

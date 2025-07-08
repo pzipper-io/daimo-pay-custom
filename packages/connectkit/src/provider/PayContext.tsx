@@ -10,6 +10,7 @@ import {
   Languages,
   Mode,
   Theme,
+  WaitingDepositAddressParams,
 } from "../types";
 import { SolanaWalletName } from "./SolanaContextProvider";
 
@@ -17,6 +18,13 @@ import { SolanaWalletName } from "./SolanaContextProvider";
 export const PayContext = createContext<PayContextValue | null>(null);
 
 export type PayLogFn = (message: string, ...props: any[]) => void;
+
+export type ExtendHandlerProps = {
+  onWaitingPayment?: (params: WaitingDepositAddressParams) => void;
+  setOnWaitingPayment: React.Dispatch<
+    React.SetStateAction<((params: WaitingDepositAddressParams) => void) | undefined>
+  >;
+}
 
 /** Daimo Pay internal context. */
 export type PayContextValue = {
@@ -74,4 +82,4 @@ export type PayContextValue = {
   setRedirectReturnUrl: React.Dispatch<
     React.SetStateAction<string | undefined>
   >;
-} & useConnectCallbackProps;
+} & useConnectCallbackProps & ExtendHandlerProps;

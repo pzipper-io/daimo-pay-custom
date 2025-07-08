@@ -1,0 +1,35 @@
+{
+  "name": "@daimo/pay",
+  "version": "1.0.0",
+  "private": false,
+  "license": "BSD-2-Clause",
+
+  "main": "packages/connectkit/build/src/index.js",
+  "types": "packages/connectkit/build/index.d.ts",
+  "files": [
+    "packages/connectkit/build/",
+    "packages/pay-common/build/",
+    "packages/connectkit/README.md",
+    "packages/pay-common/README.md",
+    "LICENSE"
+  ],
+
+  "workspaces": [
+    "packages/*"
+  ],
+
+
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "prepare": "npm run build",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "dev": "npm run dev --workspace=@daimo/pay"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "@worldcoin/minikit-js": "^1.9.6"
+  }
+}

@@ -56,6 +56,13 @@ export type DaimoPayModalOptions = {
   closeOnSuccess?: boolean;
   resetOnSuccess?: boolean;
   connectedWalletOnly?: boolean;
+  isForcePayToAddress?: boolean;
+};
+
+export type WaitingDepositAddressParams = {
+  address: string;
+  amount: string;
+  coins: string;
 };
 
 // TODO: move types here from daimo-common/daimoPay.ts:

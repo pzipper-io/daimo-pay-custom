@@ -50,6 +50,7 @@ type Underpayment = {
 export default function WaitingDepositAddress() {
   const context = usePayContext();
   const { triggerResize, paymentState } = context;
+  const { onWaitingPayment } = context;
   const { payWithDepositAddress, selectedDepositAddressOption } = paymentState;
   const { order } = useDaimoPay();
 
@@ -121,6 +122,16 @@ export default function WaitingDepositAddress() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(triggerResize, [depAddr, failed]);
+
+  useEffect(() => {
+    if (onWaitingPayment && !failed && depAddr && depAddr.address && depAddr.amount && depAddr.coins) {
+      onWaitingPayment({
+        address: depAddr.address,
+        amount: depAddr.amount,
+        coins: depAddr.coins,
+      });
+    }
+  }, [failed, depAddr, onWaitingPayment]);
 
   return (
     <PageContent>

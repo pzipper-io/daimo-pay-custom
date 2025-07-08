@@ -1,6 +1,6 @@
 {
   "name": "@daimo/pay-common",
-  "version": "1.12.2-dev",
+  "version": "1.12.1",
   "description": "Daimo Pay shared types and utilities",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,7 +11,8 @@
     "test": "tape -r ts-node/register/transpile-only test/**/*.test.ts",
     "lint": "npm run lint:deps && npm run lint:style",
     "lint:deps": "npx depcheck --ignores @tsconfig/node20,@types/tape,ts-node",
-    "lint:style": "eslint --max-warnings=0"
+    "lint:style": "eslint --max-warnings=0",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
