@@ -271,10 +271,8 @@ function DaimoPayButtonCustom(props: DaimoPayButtonCustomProps): JSX.Element {
   }, [isShowing, depositAddressOptions, props.forcePayToAddress]);
 
   const forcePayToAddress = useCallback(() => {
-    console.log('123123231232141324234235');
     depositAddressOptions.options?.map(option => {
       if (option.id === props.forcePayToAddress?.forceSenderChain) {
-        console.log('=====option:::::::', option);
         setSelectedDepositAddressOption(option);
         setRoute(ROUTES.WAITING_DEPOSIT_ADDRESS, {
           option: option.id,
