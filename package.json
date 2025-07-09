@@ -8,6 +8,7 @@
   "types": "packages/connectkit/build/index.d.ts",
   "files": [
     "packages/connectkit/build/",
+    "packages/connectkit/package.json",
     "packages/pay-common/build/",
     "packages/connectkit/README.md",
     "packages/pay-common/README.md",
