@@ -32,5 +32,23 @@
   },
   "dependencies": {
     "@worldcoin/minikit-js": "^1.9.6"
+  },
+  "overrides": {
+    "@daimo/pay>@rollup/plugin-typescript": "^12.1.2",
+    "@daimo/pay>@solana/wallet-adapter-base": "^0.9.23",
+    "@daimo/pay>@solana/wallet-adapter-react": "^0.15.35",
+    "@daimo/pay>@solana/web3.js": "^1.95.4",
+    "@daimo/pay>@trpc/client": "^11.0.0-next-beta.318",
+    "@daimo/pay>@trpc/server": "^11.0.0-next-beta.318",
+    "@daimo/pay>buffer": "^6.0.3",
+    "@daimo/pay>detect-browser": "^5.3.0",
+    "@daimo/pay>encoding": "^0.1.13",
+    "@daimo/pay>framer-motion": "^11.11.4",
+    "@daimo/pay>pino-pretty": "^13.0.0",
+    "@daimo/pay>qrcode": "^1.5.0",
+    "@daimo/pay>react-transition-state": "^1.1.4",
+    "@daimo/pay>react-use-measure": "^2.1.1",
+    "@daimo/pay>resize-observer-polyfill": "^1.5.1",
+    "@daimo/pay>styled-components": "^5.3.5"
   }
 }
