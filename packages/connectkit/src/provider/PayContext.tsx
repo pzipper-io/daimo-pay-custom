@@ -34,6 +34,8 @@ export type ExtendHandlerProps = {
   setPaymentSuccessLayout: React.Dispatch<
     React.SetStateAction<((params: PaymentSuccessLayoutProps) => ReactNode) | undefined>
   >;
+  dialogTitle?: string;
+  setDialogTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 /** Daimo Pay internal context. */

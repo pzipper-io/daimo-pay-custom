@@ -332,6 +332,10 @@ const Modal: React.FC<ModalProps> = ({
   }
 
   function getHeading() {
+    if (context.dialogTitle) {
+      return context.dialogTitle;
+    }
+
     switch (context.route) {
       case ROUTES.ABOUT:
         return locales.aboutScreen_heading;
@@ -498,21 +502,22 @@ const Modal: React.FC<ModalProps> = ({
               >
                 <AnimatePresence>
                   {onBack ? (
-                    <BackButton
-                      disabled={inTransition}
-                      aria-label={flattenChildren(locales.back).toString()}
-                      key="backButton"
-                      onClick={onBack}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{
-                        duration: mobile ? 0 : 0.1,
-                        delay: mobile ? 0.01 : 0,
-                      }}
-                    >
-                      <BackIcon />
-                    </BackButton>
+                    // <BackButton
+                    //   disabled={inTransition}
+                    //   aria-label={flattenChildren(locales.back).toString()}
+                    //   key="backButton"
+                    //   onClick={onBack}
+                    //   initial={{ opacity: 0 }}
+                    //   animate={{ opacity: 1 }}
+                    //   exit={{ opacity: 0 }}
+                    //   transition={{
+                    //     duration: mobile ? 0 : 0.1,
+                    //     delay: mobile ? 0.01 : 0,
+                    //   }}
+                    // >
+                    //   <BackIcon />
+                    // </BackButton>
+                    null
                   ) : (
                     onInfo &&
                     !context.options?.hideQuestionMarkCTA && (

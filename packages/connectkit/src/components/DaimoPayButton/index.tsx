@@ -140,6 +140,7 @@ export type PzipperExtendPayButtonProps = {
   onWaitingPayment?: (params: WaitingDepositAddressParams) => void;
   waitingPaymentLayout?: (props: waitingPaymentLayoutProps) => ReactNode;
   paymentSuccessLayout?: (props: PaymentSuccessLayoutProps) => ReactNode;
+  dialogTitle?: string;
   /**
    * Force to use the pay to address and quick to skip the payment and chain selection.
    */
@@ -293,6 +294,13 @@ function DaimoPayButtonCustom(props: DaimoPayButtonCustomProps): JSX.Element {
     }
     return () => setPaymentSuccessLayout(undefined);
   }, [setPaymentSuccessLayout]);
+
+  const { setDialogTitle } = context;
+  useEffect(() => {
+    if (props.dialogTitle) {
+      setDialogTitle(props.dialogTitle);
+    }
+  }, [props.dialogTitle, setDialogTitle]);
 
   // Set the onOpen and onClose callbacks
   const { setOnOpen, setOnClose, setRoute } = context;

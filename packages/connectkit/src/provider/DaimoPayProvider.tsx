@@ -199,6 +199,7 @@ const DaimoPayUIProvider = ({
   const [paymentSuccessLayout, setPaymentSuccessLayout] = useState<
     ((params: PaymentSuccessLayoutProps) => ReactNode) | undefined
   >(undefined);
+  const [dialogTitle, setDialogTitle] = useState<string | undefined>(undefined);
   // Connect to the Daimo Pay TRPC API
   const trpc = useMemo(() => {
     return createTrpcClient(payApiUrl, sessionId);
@@ -370,6 +371,8 @@ const DaimoPayUIProvider = ({
     paymentSuccessLayout,
     setPaymentSuccessLayout,
     debugMode,
+    dialogTitle,
+    setDialogTitle,
     log,
     displayError: (message: string | React.ReactNode | null, code?: any) => {
       setErrorMessage(message);
