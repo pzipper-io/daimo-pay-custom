@@ -1,6 +1,6 @@
 "use client";
 
-import { DaimoPayButton, useDaimoPayUI, waitingPaymentLayoutProps } from "@daimo/pay";
+import { DaimoPayButton, PaymentSuccessLayoutProps, useDaimoPayUI, waitingPaymentLayoutProps } from "@daimo/pay";
 import * as Tokens from "@daimo/pay-common";
 import {
   knownTokens,
@@ -64,7 +64,6 @@ export default function DemoExtendPay() {
   }, [isConfigOpen]);
 
   const waitingPaymentLayout = (props: waitingPaymentLayoutProps) => {
-    console.log('waitingPaymentLayout, -->>>>', props);
     return <div>
       <Text className="text-lg text-gray-700 mb-4"  >
         hahaha
@@ -77,6 +76,14 @@ export default function DemoExtendPay() {
       </Text>
       <Text className="text-lg text-gray-700 mb-4"  >
         {props.depAddr?.coins}
+      </Text>
+    </div>
+  }
+
+  const paymentSuccessLayout = (props: PaymentSuccessLayoutProps) => {
+    return <div>
+      <Text className="text-lg text-gray-700 mb-4"  >
+        = == = =  == hahaha succccc == = == =
       </Text>
     </div>
   }
@@ -141,6 +148,8 @@ export default function DemoExtendPay() {
                 forceSenderChain: config.selectedDepositOption,
               } : undefined}
               waitingPaymentLayout={waitingPaymentLayout}
+              paymentSuccessLayout={paymentSuccessLayout}
+              dialogTitle="test title"
               onPaymentStarted={printEvent}
               onPaymentCompleted={(e) => {
                 printEvent(e);
