@@ -50,7 +50,7 @@ type Underpayment = {
 export default function WaitingDepositAddress() {
   const context = usePayContext();
   const { triggerResize, paymentState } = context;
-  const { onWaitingPayment } = context;
+  const { onWaitingPayment, waitingPaymentLayout } = context;
   const { payWithDepositAddress, selectedDepositAddressOption } = paymentState;
   const { order } = useDaimoPay();
 
@@ -132,6 +132,18 @@ export default function WaitingDepositAddress() {
       });
     }
   }, [failed, depAddr, onWaitingPayment]);
+
+  if (waitingPaymentLayout) {
+    return <PageContent>
+      {waitingPaymentLayout({
+        failed,
+        depAddr,
+        selectedDepositAddressOption,
+        refresh: generateDepositAddress,
+        triggerResize,
+      })}
+    </PageContent>
+  }
 
   return (
     <PageContent>

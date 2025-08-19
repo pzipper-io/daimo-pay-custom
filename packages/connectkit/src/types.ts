@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { CustomAvatarProps } from "./components/Common/Avatar";
 import { Languages as Lang } from "./localizations";
+import { DepositAddressPaymentOptionMetadata, Token } from "@daimo/pay-common";
 export type Languages = Lang;
 
 export type Theme =
@@ -64,6 +65,29 @@ export type WaitingDepositAddressParams = {
   amount: string;
   coins: string;
 };
+
+// copy from WaitingDepositAddress/index.tsx
+export type DepositAddr = {
+  displayToken: Token | null;
+  logoURI: string;
+  expirationS?: number;
+  uri?: string;
+  coins?: string;
+  amount?: string;
+  address?: string;
+  underpayment?: {
+    unitsPaid: string;
+    coin: string;
+  };
+};
+
+export type waitingPaymentLayoutProps = {
+  failed: boolean;
+  depAddr?: DepositAddr;
+  selectedDepositAddressOption?: DepositAddressPaymentOptionMetadata;
+  refresh: () => void;
+  triggerResize: () => void;
+}
 
 // TODO: move types here from daimo-common/daimoPay.ts:
 // type PayEventBase = {

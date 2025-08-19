@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import { ReactElement, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
 import { usePayContext } from "../../hooks/usePayContext";
 import { TextContainer } from "./styles";
@@ -23,7 +23,7 @@ import { Address, Hex } from "viem";
 import { useDaimoPay } from "../../hooks/useDaimoPay";
 import { PayParams } from "../../payment/paymentFsm";
 import { ResetContainer } from "../../styles";
-import { CustomTheme, Mode, Theme, WaitingDepositAddressParams } from "../../types";
+import { CustomTheme, Mode, Theme, WaitingDepositAddressParams, waitingPaymentLayoutProps } from "../../types";
 import ThemedButton, { ThemeContainer } from "../Common/ThemedButton";
 import { ROUTES } from "../../constants/routes";
 
@@ -138,6 +138,7 @@ export type DaimoPayButtonProps = PayButtonCommonProps & {
 
 export type PzipperExtendPayButtonProps = {
   onWaitingPayment?: (params: WaitingDepositAddressParams) => void;
+  waitingPaymentLayout?: (props: waitingPaymentLayoutProps) => ReactNode;
   /**
    * Force to use the pay to address and quick to skip the payment and chain selection.
    */
@@ -245,12 +246,36 @@ function DaimoPayButtonCustom(props: DaimoPayButtonCustomProps): JSX.Element {
   }, [props.redirectReturnUrl, setRedirectReturnUrl]);
 
   const { setOnWaitingPayment } = context;
+
+  // pziper extend params
+  const onWaitingPaymentHandler = useCallback((params: WaitingDepositAddressParams) => {
+    if (props.onWaitingPayment) {
+      props.onWaitingPayment(params);
+    }
+  }, [props.onWaitingPayment]);
+
   useEffect(() => {
     if (props.onWaitingPayment) {
-      setOnWaitingPayment(() => props.onWaitingPayment);
+      setOnWaitingPayment(() => onWaitingPaymentHandler);
     }
     return () => setOnWaitingPayment(undefined);
-  }, [props.onWaitingPayment, setOnWaitingPayment]);
+  }, [setOnWaitingPayment]);
+
+  const { setWaitingPaymentLayout } = context;
+
+  const waitingPaymentLayout = useCallback((params: waitingPaymentLayoutProps) => {
+    if (props.waitingPaymentLayout) {
+      setWaitingPaymentLayout(() => props.waitingPaymentLayout);
+    }
+    return () => setWaitingPaymentLayout(undefined);
+  }, [setWaitingPaymentLayout]);
+
+  useEffect(() => {
+    if (props.waitingPaymentLayout) {
+      setOnWaitingPayment(() => waitingPaymentLayout);
+    }
+    return () => setOnWaitingPayment(undefined);
+  }, [setOnWaitingPayment, waitingPaymentLayout]);
 
   // Set the onOpen and onClose callbacks
   const { setOnOpen, setOnClose, setRoute } = context;

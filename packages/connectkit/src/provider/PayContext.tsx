@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, ReactNode } from "react";
 
 import { ROUTES } from "../constants/routes";
 import { useConnectCallbackProps } from "../hooks/useConnectCallback";
@@ -11,6 +11,7 @@ import {
   Mode,
   Theme,
   WaitingDepositAddressParams,
+  waitingPaymentLayoutProps,
 } from "../types";
 import { SolanaWalletName } from "./SolanaContextProvider";
 
@@ -23,6 +24,10 @@ export type ExtendHandlerProps = {
   onWaitingPayment?: (params: WaitingDepositAddressParams) => void;
   setOnWaitingPayment: React.Dispatch<
     React.SetStateAction<((params: WaitingDepositAddressParams) => void) | undefined>
+  >;
+  waitingPaymentLayout?: (params: waitingPaymentLayoutProps) => ReactNode;
+  setWaitingPaymentLayout: React.Dispatch<
+    React.SetStateAction<((params: waitingPaymentLayoutProps) => ReactNode) | undefined>
   >;
 }
 

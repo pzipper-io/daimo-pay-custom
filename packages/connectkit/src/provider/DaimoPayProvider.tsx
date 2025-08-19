@@ -6,6 +6,7 @@ import {
 import { Buffer } from "buffer";
 import React, {
   createElement,
+  ReactNode,
   useCallback,
   useEffect,
   useMemo,
@@ -35,6 +36,7 @@ import {
   Mode,
   Theme,
   WaitingDepositAddressParams,
+  waitingPaymentLayoutProps,
 } from "../types";
 import { createTrpcClient } from "../utils/trpc";
 import { setInWalletPaymentUrlFromApiUrl } from "../wallets/walletConfigs";
@@ -189,6 +191,9 @@ const DaimoPayUIProvider = ({
   >(undefined);
   const [onWaitingPayment, setOnWaitingPayment] = useState<
     ((params: WaitingDepositAddressParams) => void) | undefined
+  >(undefined);
+  const [waitingPaymentLayout, setWaitingPaymentLayout] = useState<
+    ((params: waitingPaymentLayoutProps) => ReactNode) | undefined
   >(undefined);
   // Connect to the Daimo Pay TRPC API
   const trpc = useMemo(() => {
@@ -356,6 +361,8 @@ const DaimoPayUIProvider = ({
     setRedirectReturnUrl,
     onWaitingPayment,
     setOnWaitingPayment,
+    waitingPaymentLayout,
+    setWaitingPaymentLayout,
     debugMode,
     log,
     displayError: (message: string | React.ReactNode | null, code?: any) => {
