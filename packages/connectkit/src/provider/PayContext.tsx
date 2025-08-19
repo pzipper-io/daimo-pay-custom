@@ -9,6 +9,7 @@ import {
   DaimoPayModalOptions,
   Languages,
   Mode,
+  PaymentSuccessLayoutProps,
   Theme,
   WaitingDepositAddressParams,
   waitingPaymentLayoutProps,
@@ -28,6 +29,10 @@ export type ExtendHandlerProps = {
   waitingPaymentLayout?: (params: waitingPaymentLayoutProps) => ReactNode;
   setWaitingPaymentLayout: React.Dispatch<
     React.SetStateAction<((params: waitingPaymentLayoutProps) => ReactNode) | undefined>
+  >;
+  paymentSuccessLayout?: (params: PaymentSuccessLayoutProps) => ReactNode;
+  setPaymentSuccessLayout: React.Dispatch<
+    React.SetStateAction<((params: PaymentSuccessLayoutProps) => ReactNode) | undefined>
   >;
 }
 

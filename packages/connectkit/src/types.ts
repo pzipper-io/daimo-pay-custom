@@ -89,6 +89,14 @@ export type waitingPaymentLayoutProps = {
   triggerResize: () => void;
 }
 
+export type PaymentSuccessLayoutProps = {
+  /** Whether completed (determines showing Spinner or Success) */
+  done: boolean;
+  /** Transaction link after completion (only present when done=true) */
+  txURL?: string;
+  orderId?: string;
+}
+
 // TODO: move types here from daimo-common/daimoPay.ts:
 // type PayEventBase = {
 //   /** The type of payment event. */

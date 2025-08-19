@@ -34,6 +34,7 @@ import {
   DaimoPayModalOptions,
   Languages,
   Mode,
+  PaymentSuccessLayoutProps,
   Theme,
   WaitingDepositAddressParams,
   waitingPaymentLayoutProps,
@@ -194,6 +195,9 @@ const DaimoPayUIProvider = ({
   >(undefined);
   const [waitingPaymentLayout, setWaitingPaymentLayout] = useState<
     ((params: waitingPaymentLayoutProps) => ReactNode) | undefined
+  >(undefined);
+  const [paymentSuccessLayout, setPaymentSuccessLayout] = useState<
+    ((params: PaymentSuccessLayoutProps) => ReactNode) | undefined
   >(undefined);
   // Connect to the Daimo Pay TRPC API
   const trpc = useMemo(() => {
@@ -363,6 +367,8 @@ const DaimoPayUIProvider = ({
     setOnWaitingPayment,
     waitingPaymentLayout,
     setWaitingPaymentLayout,
+    paymentSuccessLayout,
+    setPaymentSuccessLayout,
     debugMode,
     log,
     displayError: (message: string | React.ReactNode | null, code?: any) => {

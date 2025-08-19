@@ -24,6 +24,7 @@ import PoweredByFooter from "../../Common/PoweredByFooter";
 const Confirmation: React.FC = () => {
   const { confirmationMessage, onSuccess } = usePayContext();
   const { order, paymentState } = useDaimoPay();
+  const { paymentSuccessLayout } = usePayContext();
 
   const { done, txURL } = useMemo(() => {
     if (
@@ -48,6 +49,12 @@ const Confirmation: React.FC = () => {
       onSuccess();
     }
   }, [done, onSuccess]);
+
+  if (paymentSuccessLayout) {
+    return <PageContent>
+      {paymentSuccessLayout({ done, txURL, orderId: order?.id?.toString() ?? "" })}
+    </PageContent>
+  }
 
   return (
     <PageContent

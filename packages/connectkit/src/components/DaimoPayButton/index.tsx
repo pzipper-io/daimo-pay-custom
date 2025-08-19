@@ -23,7 +23,7 @@ import { Address, Hex } from "viem";
 import { useDaimoPay } from "../../hooks/useDaimoPay";
 import { PayParams } from "../../payment/paymentFsm";
 import { ResetContainer } from "../../styles";
-import { CustomTheme, Mode, Theme, WaitingDepositAddressParams, waitingPaymentLayoutProps } from "../../types";
+import { CustomTheme, Mode, PaymentSuccessLayoutProps, Theme, WaitingDepositAddressParams, waitingPaymentLayoutProps } from "../../types";
 import ThemedButton, { ThemeContainer } from "../Common/ThemedButton";
 import { ROUTES } from "../../constants/routes";
 
@@ -139,6 +139,7 @@ export type DaimoPayButtonProps = PayButtonCommonProps & {
 export type PzipperExtendPayButtonProps = {
   onWaitingPayment?: (params: WaitingDepositAddressParams) => void;
   waitingPaymentLayout?: (props: waitingPaymentLayoutProps) => ReactNode;
+  paymentSuccessLayout?: (props: PaymentSuccessLayoutProps) => ReactNode;
   /**
    * Force to use the pay to address and quick to skip the payment and chain selection.
    */
@@ -263,19 +264,35 @@ function DaimoPayButtonCustom(props: DaimoPayButtonCustomProps): JSX.Element {
 
   const { setWaitingPaymentLayout } = context;
 
-  const waitingPaymentLayout = useCallback((params: waitingPaymentLayoutProps) => {
+  const waitingPaymentLayout = useCallback((params: waitingPaymentLayoutProps): ReactNode => {
     if (props.waitingPaymentLayout) {
-      setWaitingPaymentLayout(() => props.waitingPaymentLayout);
+      return props.waitingPaymentLayout(params);
+    }
+    return null;
+  }, [props.waitingPaymentLayout]);
+
+  useEffect(() => {
+    if (props.waitingPaymentLayout) {
+      setWaitingPaymentLayout(() => waitingPaymentLayout);
     }
     return () => setWaitingPaymentLayout(undefined);
   }, [setWaitingPaymentLayout]);
 
-  useEffect(() => {
-    if (props.waitingPaymentLayout) {
-      setOnWaitingPayment(() => waitingPaymentLayout);
+  const { setPaymentSuccessLayout } = context;
+
+  const paymentSuccessLayout = useCallback((params: PaymentSuccessLayoutProps): ReactNode => {
+    if (props.paymentSuccessLayout) {
+      return props.paymentSuccessLayout(params);
     }
-    return () => setOnWaitingPayment(undefined);
-  }, [setOnWaitingPayment, waitingPaymentLayout]);
+    return null;
+  }, [props.paymentSuccessLayout]);
+
+  useEffect(() => {
+    if (props.paymentSuccessLayout) {
+      setPaymentSuccessLayout(() => paymentSuccessLayout);
+    }
+    return () => setPaymentSuccessLayout(undefined);
+  }, [setPaymentSuccessLayout]);
 
   // Set the onOpen and onClose callbacks
   const { setOnOpen, setOnClose, setRoute } = context;
